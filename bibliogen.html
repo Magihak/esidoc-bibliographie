@@ -103,12 +103,19 @@
         // Masquer tout
         allFields.forEach(f => f.parentElement.classList.add("hidden"));
 
+        document.getElementById("commentaireBloc").classList.add("hidden");
+
         // Réafficher ceux du type choisi
         if (mapping[type]) {
             mapping[type].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.parentElement.classList.remove("hidden");
             });
+        }
+
+        // Si IA → afficher la zone commentaire
+        if (type === "ia") {
+            document.getElementById("commentaireBloc").classList.remove("hidden");
         }
     }
 
@@ -128,13 +135,15 @@
         var separ13 = ")";
         var separ14 = "Consulté le : ";
         var separ15 = " Analyse critique du contenu généré : ";
+        var separ16 = " <i> ";
+        var separ17 = " </i> ";
 
         var concat = "";
 
         if (document.getElementById("livre").checked) {
             concat = document.getElementById("result").value.toUpperCase() + separ +
-                document.getElementById("result2").value + separ2 +
-                document.getElementById("result3").value.italics() + separ2 +
+                document.getElementById("result2").value + separ2 + separ16 +
+                document.getElementById("result3").value + separ17 + separ2 +
                 document.getElementById("result6").value + separ +
                 document.getElementById("result9").value + separ2 +
                 document.getElementById("result12").value + separ9;
@@ -143,8 +152,8 @@
         if (document.getElementById("article").checked) {
             concat = document.getElementById("result").value.toUpperCase() + separ +
                 document.getElementById("result2").value + separ2 +
-                separ8 + document.getElementById("result8").value + separ8 + separ2 +
-                document.getElementById("result4").value.italics() + separ +
+                separ8 + document.getElementById("result8").value + separ8 + separ2 + separ16 +
+                document.getElementById("result4").value + separ17 + separ +
                 separ4 + document.getElementById("result11").value + separ +
                 document.getElementById("result9").value + separ2 +
                 separ3 + document.getElementById("result13").value;
@@ -153,8 +162,8 @@
         if (document.getElementById("web").checked) {
             concat = document.getElementById("result").value.toUpperCase() + separ +
                 document.getElementById("result2").value + separ2 +
-                separ8 + document.getElementById("result15").value + separ8 + separ2 +
-                document.getElementById("result5").value.italics() + separ7 + separ +
+                separ8 + document.getElementById("result15").value + separ8 + separ2 + separ16 +
+                document.getElementById("result5").value + separ17 + separ7 + separ +
                 document.getElementById("result9").value + separ2 +
                 separ5 + document.getElementById("result10").value + separ2 +
                 separ6 + document.getElementById("result14").value;
@@ -182,7 +191,7 @@
 <form name="form">
     <b>1 - Choisissez le type de document :</b>
     <label><input type="radio" name="typedoc" id="livre" onclick="toggleFields('livre')"> Livre</label>
-    <label><input type="radio" name="typedoc" id="article" onclick="toggleFields('article')"> Article de périodique</label>
+    <label><input type="radio" name="typedoc" id="article" onclick="toggleFields('article')"> Article de périodique (journaux, revues)</label>
     <label><input type="radio" name="typedoc" id="web" onclick="toggleFields('web')"> Page de site internet</label>
     <label><input type="radio" name="typedoc" id="ia" onclick="toggleFields('ia')"> IA Générative</label>
 
@@ -199,13 +208,13 @@
             <td><input type="text" id="result6" value="Éditeur"></td>
         </tr>
         <tr>
-            <td><input type="text" id="result7" value="Titre du chapitre"></td>
             <td><input type="text" id="result8" value="Titre de l'article"></td>
             <td><input type="text" id="result9" value="Date de publication"></td>
         </tr>
         <tr>
             <td><input type="text" id="result10" value="Date de consultation" placeholder = "Date de consultation"></td>
             <td><input type="text" id="result11" value="Numéro" placeholder = "Numéro"></td>
+            <td><input type="text" id="result12" value="Nombre total de pages" placeholder = "Nombre total de pages"></td>
         </tr>
         <tr>
             <td><input type="text" id="result13" value="Pagination" placeholder = "Pagination"></td>
@@ -234,7 +243,11 @@
 
     <b>4 - Référence générée :</b>
     <textarea readonly id="result16" rows="5"></textarea>
-</form>
 
+</form>
+<br />
+N'oubliez pas de <b>mettre en forme le titre</b> (situ&eacute; entre les balises &lt;i&gt; et &lt;/i&gt;) :<br />
+- le <u>souligner</u>, pour une bibliographie &eacute;crite &agrave; la main<br />
+- le mettre en <i>italique</i>, pour une bibliographie &agrave; l'ordinateur<br />
 </body>
 </html>
