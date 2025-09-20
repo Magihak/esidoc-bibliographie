@@ -92,10 +92,9 @@
         // Liste des champs par type de document
         const mapping = {
             livre: ["result", "result2", "result3", "result6", "result9", "result12"],
-            chapitre: ["result", "result2", "result3", "result6", "result7", "result9", "result13"],
             article: ["result", "result2", "result8", "result4", "result11", "result9", "result13"],
             web: ["result", "result2", "result15", "result5", "result9", "result10", "result14"],
-            ia: ["result19", "result17", "result18"]
+            ia: ["result19", "result17", "result18", "result21","result22"]
         };
 
         // Tous les champs du formulaire
@@ -125,6 +124,10 @@
         var separ9 = " p.";
         var separ10 = " IA : ";
         var separ11 = " | Prompt : ";
+        var separ12 = " (";
+        var separ13 = ")";
+        var separ14 = "Consulté le : ";
+        var separ15 = " Analyse critique du contenu généré : ";
 
         var concat = "";
 
@@ -135,16 +138,6 @@
                 document.getElementById("result6").value + separ +
                 document.getElementById("result9").value + separ2 +
                 document.getElementById("result12").value + separ9;
-        }
-
-        if (document.getElementById("chapitre").checked) {
-            concat = document.getElementById("result").value.toUpperCase() + separ +
-                document.getElementById("result2").value + separ2 +
-                document.getElementById("result3").value.italics() + separ2 +
-                document.getElementById("result6").value + separ +
-                document.getElementById("result9").value + separ2 +
-                document.getElementById("result7").value + separ + separ3 +
-                document.getElementById("result13").value;
         }
 
         if (document.getElementById("article").checked) {
@@ -168,9 +161,13 @@
         }
 
         if (document.getElementById("ia").checked) {
-            concat = separ10 + document.getElementById("result19").value + separ11 +
-                document.getElementById("result17").value + separ +
-                document.getElementById("result18").value;
+            concat = separ8 + document.getElementById("result17").value + separ8 + separ + 
+                document.getElementById("result19").value + separ +
+                document.getElementById("result21").value
+                //  document.getElementById("result20").value 
+                + separ2 + separ14 + document.getElementById("result18").value + separ2 + separ15 +
+                document.getElementById("result22").value
+                ;
         }
 
         if (concat === "") {
@@ -185,10 +182,9 @@
 <form name="form">
     <b>1 - Choisissez le type de document :</b>
     <label><input type="radio" name="typedoc" id="livre" onclick="toggleFields('livre')"> Livre</label>
-    <label><input type="radio" name="typedoc" id="chapitre" onclick="toggleFields('chapitre')"> Chapitre</label>
-    <label><input type="radio" name="typedoc" id="article" onclick="toggleFields('article')"> Article</label>
-    <label><input type="radio" name="typedoc" id="web" onclick="toggleFields('web')"> Page internet</label>
-    <label><input type="radio" name="typedoc" id="ia" onclick="toggleFields('ia')"> IA</label>
+    <label><input type="radio" name="typedoc" id="article" onclick="toggleFields('article')"> Article de périodique</label>
+    <label><input type="radio" name="typedoc" id="web" onclick="toggleFields('web')"> Page de site internet</label>
+    <label><input type="radio" name="typedoc" id="ia" onclick="toggleFields('ia')"> IA Générative</label>
 
     <b>2 - Remplissez les champs suivants :</b>
     <table>
@@ -208,26 +204,35 @@
             <td><input type="text" id="result9" value="Date de publication"></td>
         </tr>
         <tr>
-            <td><input type="text" id="result10" value="Date de consultation"></td>
-            <td><input type="text" id="result11" value="Numéro"></td>
-            <td><input type="text" id="result12" value="Nombre total de pages"></td>
+            <td><input type="text" id="result10" value="Date de consultation" placeholder = "Date de consultation"></td>
+            <td><input type="text" id="result11" value="Numéro" placeholder = "Numéro"></td>
         </tr>
         <tr>
-            <td><input type="text" id="result13" value="Pagination"></td>
-            <td><input type="text" id="result14" value="Adresse URL"></td>
-            <td><input type="text" id="result15" value="Titre de la page web"></td>
+            <td><input type="text" id="result13" value="Pagination" placeholder = "Pagination"></td>
+            <td><input type="text" id="result14" value="Adresse URL" placeholder = "Adresse URL"></td>
+            <td><input type="text" id="result15" value="Titre de la page web" placeholder = "Titre de la page web"></td>
         </tr>
         <tr>
-            <td><input type="text" id="result19" value="Nom de l'IA"></td>
-            <td><input type="text" id="result17" value="Prompt utilisé"></td>
-            <td><input type="text" id="result18" value="Je sais pas encore"></td>
+            <td><input type="text" id="result19" value="Nom de l'IA" placeholder = "Nom de l'IA"></td>
+            <td><input type="text" id="result17" value="Prompt utilisé" placeholder = "Prompt utilisé"></td>
+            <td><input type="text" id="result18" value="Date d'utilisation (JJ mois AAAA)" placeholder = "Date d'utilisation (JJ mois AAAA)"></td>
+        </tr>
+        <tr>
+            <!-- <td><input type="text" id="result20" value="Version utilsiée"></td> A ajouté si on veut la version de l'IA -->
+            <td><input type="text" id="result21" value="Développeur de l'IA" placeholder="Développeur de l'IA"></td>
         </tr>
     </table>
-
+        <div id="commentaireBloc" class="hidden">
+            <b>3 - Analyse critique du contenu généré :</b>
+            <textarea id="result22" rows="6" 
+                    value = ""
+                    placeholder="Écrivez ici votre commentaire ou analyse critique..." 
+                    style="width:100%; margin-top:10px;"></textarea>
+        </div>
     <input type="button" value="Générer" onclick="copieChoix()">
     <input type="button" value="Réinitialiser" onclick="this.form.reset(); toggleFields('')">
 
-    <b>3 - Référence générée :</b>
+    <b>4 - Référence générée :</b>
     <textarea readonly id="result16" rows="5"></textarea>
 </form>
 
